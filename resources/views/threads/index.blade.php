@@ -10,8 +10,10 @@
 
     <div class="col-12">
         @forelse ($threads as $thread)
-            <div class="list-group">
-                <a href="{{ route('threads.show', $thread->slug) }}" class="list-group-item list-group-item-action mb-2">
+        <div class="list-group mb-2">
+            
+            <a href="{{ route('threads.show', $thread->slug) }}" class="list-group-item list-group-item-action">
+                <span class="badge rounded-pill text-bg-primary mb-3">{{$thread->channel->name}}</span>
                     <h5>{{ $thread->title }}</h5>
                     <small>Criado em {{ $thread->created_at->diffForHumans() }} por {{$thread->user->name}} </small>
                 </a>

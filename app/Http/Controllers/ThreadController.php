@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ThreadController extends Controller
 {
@@ -18,7 +20,7 @@ class ThreadController extends Controller
      */
     public function index()
     {
-        $threads = $this->thread->paginate(15);
+        $threads = $this->thread->orderBy('created_at', 'DESC')->paginate(15);
 
         return view('threads.index', compact('threads'));
     }
@@ -42,35 +44,45 @@ class ThreadController extends Controller
     public function store(Request $request)
     {
         try {
-            $this->thread->create($request->all());
-            dd('topico criado');
-        } catch (\Throwable $th) {
-            dd('error');
+            $thread = $request->all();
+            $thread['slug'] = Str::slug($thread['title']);
+
+            $user = User::find(1);
+            $user->threads()->create($thread);
+
+            flash('Tópico criado')->success();
+
+            return redirect()->route('threads.show', $thread['slug']);
+        } catch (\Exception $e) {
+            $message = env('APP_DEBUG') ?$e->getMessage() : 'Erro ao processar o Tópico.';
+            flash($message)->warning();         
+
+            return redirect()->back();
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($thread)
     {
-        $thread = $this->thread->find($id);
+        $thread = $this->thread->whereSlug($thread)->first();
 
-        return $thread;
+        return view('threads.show', compact('thread') );
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $thread
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($thread)
     {
-        $thread = $this->thread->find($id);
+        $thread = $this->thread->whereSlug($thread)->first();
         return view('threads.edit', compact('thread'));
     }
 
@@ -78,36 +90,46 @@ class ThreadController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $slug
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $thread)
     {
         try {
-            $thread = $this->thread->find($id);
+            $thread = $this->thread->whereSlug($thread)->first();
             $thread->update($request->all());
 
-            dd('topico atualizado');
-        } catch (\Throwable $th) {
-            dd('error');
+            flash('Tópico atualizado com sucesso!')->success();
+            return redirect()->route('threads.show', $thread->slug);
+
+        } catch (\Exception $e) {
+
+            $message = env('APP_DEBUG') ? $e->getMessage() : 'Erro ao processar o Tópico.';
+            flash($message)->warning();
+            return redirect()->back();
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($thread)
     {
         try {
-            $thread = $this->thread->find($id);
+            $thread = $this->thread->whereSlug($thread)->first();
+            if(!$thread) return redirect()->route('threads.index');
             $thread->delete();
+            flash('Tópico excluído com sucesso!')->success();
+            return redirect()->route('threads.index');
 
-            dd('topico excluido');
-        } catch (\Throwable $th) {
-            dd('error');
+        } catch (\Exception $e) {
+            $message = env('APP_DEBUG') ? $e->getMessage() : 'Erro ao processar o Tópico.';
+            flash($message)->warning();
+
+            return redirect()->back();
         }
     }
 }

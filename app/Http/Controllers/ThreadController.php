@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ThreadRequest;
 use App\Models\{Channel, Thread, User};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class ThreadController extends Controller
@@ -19,6 +21,12 @@ class ThreadController extends Controller
      */
     public function index(Request $request, Channel $channel)
     {
+        // $this->authorize('access-index-forum');
+
+        // if (!Gate::allows('access-index-thread')) {
+        //     return dd('access denied');
+        // } 
+
         $channelParam = $request->channel;
         if(null !== $channelParam) {
             $threads = $channel->whereSlug($channelParam)->first()->threads()->paginate(15);
@@ -34,9 +42,11 @@ class ThreadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Channel $channel)
     {
-        return view('threads.create');
+        return view('threads.create', [
+            'channels' => $channel->all()
+        ]);
     }
 
     /**
@@ -45,14 +55,14 @@ class ThreadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ThreadRequest $request)
     {
         try {
             $thread = $request->all();
             $thread['slug'] = Str::slug($thread['title']);
 
             $user = User::find(1);
-            $user->threads()->create($thread);
+            $thread = $user->threads()->create($thread);
 
             flash('Tópico criado')->success();
 
@@ -87,6 +97,9 @@ class ThreadController extends Controller
     public function edit($thread)
     {
         $thread = $this->thread->whereSlug($thread)->first();
+        
+        $this->authorize('update', $thread);
+        
         return view('threads.edit', compact('thread'));
     }
 

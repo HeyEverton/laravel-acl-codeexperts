@@ -19,8 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->route('threads.index');
 });
-
-Route::resource('threads', ThreadController::class);
+Route::group(['middleware' => 'access.control.middleware'], function () {
+    Route::resource('threads', ThreadController::class);
+});
 Route::post('replies/store', [ReplyController::class, 'store'])->name('replies.store');
 
 Auth::routes();

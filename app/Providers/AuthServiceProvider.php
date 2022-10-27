@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Resource;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -25,9 +26,19 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('access-index-thread', function($user) {
-            return $user->isAdmin();
-        });
+        $resources = Resource::all();
+        // print($resources);
+        
+        foreach ($resources as $resource) {
+            // dd($resource->roles);
+            
+            Gate::define($resource->resource, function($user) use ($resource) {
+              return $resource->roles->contains($user->role);
+
+            });
+        }
+        // dd(Gate::abilities());
+
 
     }
 }

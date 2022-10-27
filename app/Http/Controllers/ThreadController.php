@@ -21,11 +21,7 @@ class ThreadController extends Controller
      */
     public function index(Request $request, Channel $channel)
     {
-        // $this->authorize('access-index-forum');
-
-        // if (!Gate::allows('access-index-thread')) {
-        //     return dd('access denied');
-        // } 
+        // $this->authorize('threads/index');
 
         $channelParam = $request->channel;
         if(null !== $channelParam) {

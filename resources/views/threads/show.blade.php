@@ -50,23 +50,29 @@
                 @endforeach
             </div>
         @endif
-        <div class="col-12">
-            <hr>
-            <form action="{{ route('replies.store') }}" method="POST">
-                @csrf
+        @auth
+            <div class="col-12">
+                <hr>
+                <form action="{{ route('replies.store') }}" method="POST">
+                    @csrf
 
-                <div class="form-group">
-                    <input type="hidden" name="thread_id" value="{{ $thread->id }}">
-                    <label for="">Responder</label>
-                    <textarea name="reply" id="" cols="30" rows="5"
-                        class="form-control @error('reply') is-invalid @enderror"></textarea>
-                    @error('reply')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <button class="btn btn-success mt-2" type="submit">Enviar resposta</button>
+                    <div class="form-group">
+                        <input type="hidden" name="thread_id" value="{{ $thread->id }}">
+                        <label for="">Responder</label>
+                        <textarea name="reply" id="" cols="30" rows="5"
+                            class="form-control @error('reply') is-invalid @enderror"></textarea>
+                        @error('reply')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <button class="btn btn-success mt-2" type="submit">Enviar resposta</button>
 
-            </form>
-        </div>
+                </form>
+            </div>
+            @else
+            <div class="col-12 text-center">
+                <h5>Você precisa logar para responder algum tópico.</h5>
+            </div>
+        @endauth
     </div>
 @endsection

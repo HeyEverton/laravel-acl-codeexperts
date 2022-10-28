@@ -57,6 +57,20 @@
                             </div>
                         </li>
 
+                        <li class="nav-item" style="margin-left: 20px">
+                            <a href="{{ route('users.index') }}" class="nav-link">Usuários</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('roles.index') }}" class="nav-link">Cargos</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('resources.index') }}" class="nav-link">Recursos</a>
+                        </li>
+
+
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->

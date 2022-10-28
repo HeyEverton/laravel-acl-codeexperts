@@ -5,15 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Resource extends Model
+class Module extends Model
 {
     use HasFactory;
-    // protected $table = 'resources';
-
     protected $fillable = [
         'name',
-        'resource',
-        'is_menu',
     ];
 
     public function roles()
@@ -21,8 +17,8 @@ class Resource extends Model
         return $this->belongsToMany(Role::class);
     }
 
-    public function module()
+    public function resources()
     {
-        return $this->belongsTo(Module::class);
+        return $this->hasMany(Resource::class);
     }
 }

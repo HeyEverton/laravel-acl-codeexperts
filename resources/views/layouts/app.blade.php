@@ -39,35 +39,45 @@
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" 
-                                id="navbarDropdownMenuLink"
-                                role="button"
-                                data-bs-toggle="dropdown" 
-                            >
+                            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink"
+                                role="button" data-bs-toggle="dropdown">
                                 Canais
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a href="{{route('threads.index')}}" class="dropdown-item">Todos</a>
+                                <a href="{{ route('threads.index') }}" class="dropdown-item">Todos</a>
                                 <hr class="dropdown-divider">
-                                
+
                                 @foreach (\App\Models\Channel::all(['slug', 'name']) as $channel)
-                                <a href="{{route('threads.index', ['channel' => $channel->slug])}}" class="dropdown-item">{{$channel->name}}</a>                                   
+                                    <a href="{{ route('threads.index', ['channel' => $channel->slug]) }}"
+                                        class="dropdown-item">{{ $channel->name }}</a>
                                 @endforeach
                             </div>
                         </li>
 
-                        <li class="nav-item" style="margin-left: 20px">
+                        @foreach ($menus as $m)
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="{{ route($m->resource) }}">
+                                    <span data-feather="file"></span>
+                                    {{ $m->name }}
+                                </a>
+                            </li>
+                        @endforeach
+
+                        {{-- @if (request()->is('manager/users*')) active @endif" --}}
+
+                        {{-- <li class="nav-item" style="margin-left: 20px">
                             <a href="{{ route('users.index') }}" class="nav-link">Usuários</a>
-                        </li>
+                        </li> --}}
 
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('roles.index') }}" class="nav-link">Cargos</a>
-                        </li>
+                        </li> --}}
 
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('resources.index') }}" class="nav-link">Recursos</a>
-                        </li>
+                        </li>  --}}
 
 
 

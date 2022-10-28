@@ -55,13 +55,22 @@
                             </div>
                         </li>
 
-                        @foreach ($menus as $m)
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                    href="{{ route($m->resource) }}">
-                                    <span data-feather="file"></span>
-                                    {{ $m->name }}
+                        @foreach ($modules as $m)
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink"
+                                    role="button" data-bs-toggle="dropdown">
+                                    {{$m['name']}}
                                 </a>
+    
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    @foreach ($m['resources'] as $r)
+
+                                            <a class="dropdown-item " href="{{ route($r->resource) }}">
+                                                <span data-feather="file"></span>
+                                                {{ $r->name }}
+                                            </a>
+                                    @endforeach
+                                </div>
                             </li>
                         @endforeach
 

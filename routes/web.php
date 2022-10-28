@@ -31,7 +31,7 @@ Route::post('replies/store', [ReplyController::class, 'store'])->name('replies.s
 Auth::routes();
 
 
-Route::group(['middleware' => 'auth', 'prefix' => 'manager'], function(){
+Route::group(['middleware' => ['auth', 'access.control.middleware'], 'prefix' => 'manager'], function(){
 	Route::get('/', function(){
 		return redirect()->route('users.index');
 	});
@@ -43,3 +43,4 @@ Route::group(['middleware' => 'auth', 'prefix' => 'manager'], function(){
 	Route::resource('users', UserController::class);
     
 });
+

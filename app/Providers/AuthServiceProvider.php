@@ -27,18 +27,18 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         $resources = Resource::all();
-        // print($resources);
-        
+
+        Gate::before(function($user) {
+            return $user->isAdmin();
+
+        });
+
         foreach ($resources as $resource) {
-            // dd($resource->roles);
-            
+
             Gate::define($resource->resource, function($user) use ($resource) {
               return $resource->roles->contains($user->role);
 
             });
         }
-        // dd(Gate::abilities());
-
-
     }
 }

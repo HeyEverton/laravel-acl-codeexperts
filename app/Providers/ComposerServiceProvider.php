@@ -23,11 +23,7 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer('layouts.app', function($view) {
-            $menus = auth()->user()->role->resources()->where('is_menu', true)->get();
-            
-            $view->with('menus', $menus);
-        });
+        view()->composer('layouts.app', 'App\Http\Views\MenuViewsComposer@compose');
     }
 }
 

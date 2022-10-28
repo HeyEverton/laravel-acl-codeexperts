@@ -41,7 +41,9 @@
             @endforelse
             </tbody>
         </table>
-        {{$resources->links()}}
+        {{-- <div class="d-flex">
+           {{$resources->links()}}
+       </div> --}}
     </div>
 
 @endsection

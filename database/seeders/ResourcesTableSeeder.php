@@ -16,17 +16,16 @@ class ResourcesTableSeeder extends Seeder
      */
     public function run()
     {
-        foreach(Route::getRoutes()->getRoutes() as $routes) {
+        foreach (Route::getRoutes()->getRoutes() as $routes) {
             $nameRoute = $routes->getName();
 
-            if($nameRoute) {
+            if ($nameRoute) {
                 Resource::create([
                     'name' => ucwords(str_replace('.', ' ', $nameRoute)),
                     'resource' => $nameRoute,
-                    'is_menu' => false,
+                    'is_menu' => shuffle([ 1, 0 ]),
                 ]);
             }
-
         };
     }
 }

@@ -142,10 +142,10 @@ class ModuleController extends Controller
 
 	public function syncResources(Module $module, Resource $resource)
 	{
-		$resources = $resource->whereNull('module_id')
-		                     ->where('is_menu', true)
-		                     ->get();
-
+		$resources = $resource
+		->whereNull('module_id')
+		->where('is_menu', true)
+		->get();
 		return view('manager.modules.sync-resources', compact('module', 'resources'));
 	}
 

@@ -60,14 +60,13 @@
                                 <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink"
                                     role="button" data-bs-toggle="dropdown">
                                     {{$m['name']}}
-                                </a>
-    
+                                </a>    
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    @foreach ($m['resources'] as $r)
 
-                                            <a class="dropdown-item " href="{{ route($r->resource) }}">
+                                    @foreach ($m['resources'] as $r)
+                                            <a class="dropdown-item " href="{{ route($r['resource']) }}">
                                                 <span data-feather="file"></span>
-                                                {{ $r->name }}
+                                                {{ $r['name'] }}
                                             </a>
                                     @endforeach
                                 </div>

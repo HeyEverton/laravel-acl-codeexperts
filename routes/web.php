@@ -49,6 +49,9 @@ Route::group(['middleware' => ['auth', 'access.control.middleware'], 'prefix' =>
 Route::get('modules/{module}/resources', [ModuleController::class, 'syncResources'])->name('modules.resources');
 
 Route::put('modules/{module}/resources', [ModuleController::class, 'updateSyncResources'])->name('modules.resources.update');
+Route::get('teste', function() {
+	return '<h1>pong</h1>';
+})->name('TESTE.TESTE');
     
 });
 
